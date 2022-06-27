@@ -17,6 +17,17 @@ func TestMaskWithSingleRegexp(t *testing.T) {
 	assertEquals(t, result, expectedResult)
 }
 
+func TestMaskWithMultibyteCharacters(t *testing.T) {
+	input := "Üks poiss läks üle silla"
+	regexpList := []string{"(Ü|ü)"}
+
+	expectedResult := "*ks poiss läks *le silla"
+
+	result := Mask(&input, &regexpList)
+
+	assertEquals(t, result, expectedResult)
+}
+
 func TestMaskRespectsCaseRegexp(t *testing.T) {
 	input := "foo bar baz BAR foo"
 	regexpList := []string{"bar"}
