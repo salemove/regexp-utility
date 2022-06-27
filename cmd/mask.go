@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"unicode/utf8"
 )
 
 func Mask(input *string, regexpList *[]string) string {
@@ -25,7 +26,7 @@ func Mask(input *string, regexpList *[]string) string {
 }
 
 func replaceWithAsterisks(match []byte) []byte {
-	matchLength := len(match)
+	matchLength := utf8.RuneCount(match)
 	replacement := bytes.Repeat([]byte("*"), matchLength)
 
 	return replacement
