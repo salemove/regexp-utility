@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 	"testing"
@@ -73,7 +74,8 @@ func TestRegexWithLookaround(t *testing.T) {
 	cmd := exec.Command(os.Args[0], "-test.run=TestRegexWithLookaround")
 	cmd.Env = append(os.Environ(), "RUN_TEST=1")
 	err := cmd.Run()
-	if e, ok := err.(*exec.ExitError); ok && !e.Success() {
+	var e *exec.ExitError
+	if errors.As(err, &e) && !e.Success() {
 		return
 	}
 
