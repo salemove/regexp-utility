@@ -66,21 +66,24 @@ jobs:
       - test
       - build
     steps:
-    - name: Generate release tag
-      id: gen_tag
-      run: |
-        SHORT_REV=$(git rev-parse --short "$GITHUB_SHA")
-        echo "::set-output name=release_tag::release-$SHORT_REV"
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Push new tag
-      run: |
-        git tag ${{ steps.gen_tag.outputs.release_tag }}
-        git push origin master ${{ steps.gen_tag.outputs.release_tag }}
+      - name: Generate release tag
+        id: gen_tag
+        run: |
+          SHORT_REV=$(git rev-parse --short "$GITHUB_SHA")
+          echo "::set-output name=release_tag::release-$SHORT_REV"
 
-    - name: Create GitHub release
-      uses: softprops/action-gh-release@v2
-      with:
-        tag_name: ${{ steps.gen_tag.outputs.release_tag }}
-        generate_release_notes: true
-        files: |
-          releases/regexp_utility-*
+      - name: Push new tag
+        run: |
+          git tag ${{ steps.gen_tag.outputs.release_tag }}
+          git push origin master ${{ steps.gen_tag.outputs.release_tag }}
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.gen_tag.outputs.release_tag }}
+          generate_release_notes: true
+          files: |
+            releases/regexp_utility-*
