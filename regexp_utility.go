@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
 	"regexp_utility/cmd"
 )
 
@@ -54,7 +55,12 @@ func main() {
 
 	switch os.Args[1] {
 	case "mask":
-		maskCmd.Parse(os.Args[2:])
+		err := maskCmd.Parse(os.Args[2:])
+		if err != nil {
+			fmt.Printf("Cannot parse command-line arguments: %s\n", err)
+			os.Exit(1)
+		}
+
 		regexpStringList := []string(regexpList)
 
 		if *maskInput == "" {
@@ -69,7 +75,11 @@ func main() {
 
 		mask(maskInput, &regexpStringList)
 	case "validate":
-		validateCmd.Parse(os.Args[2:])
+		err := validateCmd.Parse(os.Args[2:])
+		if err != nil {
+			fmt.Printf("Cannot parse command-line arguments: %s\n", err)
+			os.Exit(1)
+		}
 
 		if *validateRegexp == "" {
 			fmt.Println("Regular expression cannot be empty")
