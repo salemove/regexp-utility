@@ -1,3 +1,3 @@
 module regexp_utility
 
-go 1.22
+go 1.26
