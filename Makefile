@@ -34,6 +34,7 @@ vet:
 ## lint: run various Go source code linters
 .PHONY: lint
 lint: golangci-lint
+	@$(GOLANGCI_LINT) config verify
 	@$(GOLANGCI_LINT) run
 
 ## lint.fix: run various Go source code linters and automatically fix warnings
@@ -64,13 +65,13 @@ build:
 
 TOOLS_DIR ?= $(shell pwd)/.cache/tools
 
-GOLANGCI_LINT_VERSION ?= v1.59.1
+GOLANGCI_LINT_VERSION ?= v2.11.3
 GOLANGCI_LINT = $(TOOLS_DIR)/golangci-lint-$(GOLANGCI_LINT_VERSION)
 
 ## golangci-lint: download golangci-lint locally if necessary.
 golangci-lint: $(GOLANGCI_LINT)
 $(GOLANGCI_LINT): $(TOOLS_DIR)
-	$(call go-install-tool,$(GOLANGCI_LINT),github.com/golangci/golangci-lint/cmd/golangci-lint,${GOLANGCI_LINT_VERSION})
+	$(call go-install-tool,$(GOLANGCI_LINT),github.com/golangci/golangci-lint/v2/cmd/golangci-lint,${GOLANGCI_LINT_VERSION})
 
 $(TOOLS_DIR):
 	@mkdir -p $(TOOLS_DIR)

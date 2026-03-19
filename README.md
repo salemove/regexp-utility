@@ -56,10 +56,10 @@ There is no preference which method to use.
 
 #### Installing go using asdf
 
-NB! At the time of last update of this document the latest version of Go was `1.22`.
+NB! At the time of last update of this document the latest version of Go was `1.26`.
 Go versions are usually backwards compatible and it will most likely work with the newer version.
 
-`asdf plugin-add golang && asdf install golang 1.22 && asdf global golang 1.22`
+`asdf plugin-add golang && asdf install golang 1.26 && asdf global golang 1.26`
 
 #### Installing go using Homebrew
 

@@ -10,8 +10,8 @@ on:
 
 env:
   # Common versions
-  GO_VERSION: '1.22.7'
-  GOLANGCI_LINT_VERSION: 'v1.59.1'
+  GO_VERSION: '1.26.1'
+  GOLANGCI_LINT_VERSION: 'v2.11.3'
 
 jobs:
   build:
@@ -27,9 +27,9 @@ jobs:
           cache: false  # The golangci-lint action does its own caching.
 
       - name: Lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v7
         with:
-          version: ${{ env.GOLANGCI_VERSION }}
+          version: ${{ env.GOLANGCI_LINT_VERSION }}
 
       - name: Run quality control checks
         run: make vet
