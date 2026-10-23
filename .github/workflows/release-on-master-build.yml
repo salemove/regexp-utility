@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Set up Go
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
@@ -63,24 +65,15 @@ jobs:
           GOOS: darwin
           GOARCH: arm64
 
-      - name: Generate release tag
-        id: gen_tag
-        run: |
-          SHORT_REV=$(git rev-parse --short "$GITHUB_SHA")
-          echo "::set-output name=release_tag::release-$SHORT_REV"
-
-      - name: Push new tag
-        run: |
-          git tag ${{ steps.gen_tag.outputs.release_tag }}
-          git push origin master ${{ steps.gen_tag.outputs.release_tag }}
-
       - name: Create GitHub release
-        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
-        with:
-          tag_name: ${{ steps.gen_tag.outputs.release_tag }}
-          generate_release_notes: true
-          files: |
-            releases/regexp_utility-linux-amd64
-            releases/regexp_utility-linux-arm64
-            releases/regexp_utility-darwin-amd64
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RELEASE_TAG="release-$(git rev-parse --short "$GITHUB_SHA")"
+          gh release create "$RELEASE_TAG" \
+            --target "$GITHUB_SHA" \
+            --generate-notes \
+            releases/regexp_utility-linux-amd64 \
+            releases/regexp_utility-linux-arm64 \
+            releases/regexp_utility-darwin-amd64 \
             releases/regexp_utility-darwin-arm64
